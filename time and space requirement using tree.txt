@@ -1,0 +1,204 @@
+#include <iostream>
+#include <cstring> // Include for strcmp
+using namespace std;
+
+struct node {
+    char name[20];
+    node *next;
+    node *down;
+    int flag;
+};
+
+class Gll {
+    node *head;
+
+public:
+    Gll() {
+        head = NULL;
+    }
+    node *create();
+    void insertb();
+    void insertc();
+    void inserts();
+    void insertss();
+    void displayb();
+};
+
+node *Gll::create() {
+    node *p = new node;
+    p->next = NULL;
+    p->down = NULL;
+    p->flag = 0;
+    cout << "\nEnter the name: ";
+    cin >> p->name;
+    return p;
+}
+
+void Gll::insertb() {
+    if (head == NULL) {
+        head = create();
+    } else {
+        cout << "\nBook already exists.";
+    }
+}
+
+void Gll::insertc() {
+    if (head == NULL) {
+        cout << "\nThere is no book.";
+    } else {
+        cout << "\nHow many chapters do you want to insert: ";
+        int n;
+        cin >> n;
+        for (int i = 0; i < n; i++) {
+            node *t1 = create();
+            if (head->flag == 0) {
+                head->down = t1;
+                head->flag = 1;
+            } else {
+                node *temp = head->down;
+                while (temp->next != NULL)
+                    temp = temp->next;
+                temp->next = t1;
+            }
+        }
+    }
+}
+
+void Gll::inserts() {
+    if (head == NULL) {
+        cout << "\nThere is no book.";
+    } else {
+        cout << "\nEnter the name of the chapter you want to enter the section for: ";
+        char ch[20];
+        cin >> ch;
+        node *temp = head->down;
+        while (temp != NULL) {
+            if (!strcmp(ch, temp->name)) {
+                cout << "\nHow many sections do you want to enter: ";
+                int n;
+                cin >> n;
+                node *t1 = temp->down;
+                for (int i = 0; i < n; i++) {
+                    node *t2 = create();
+                    if (temp->down == NULL) {
+                        temp->down = t2;
+                    } else {
+                        while (t1->next != NULL)
+                            t1 = t1->next;
+                        t1->next = t2;
+                    }
+                }
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << "\nChapter not found.";
+    }
+}
+
+void Gll::insertss() {
+    if (head == NULL) {
+        cout << "\nThere is no book.";
+    } else {
+        cout << "\nEnter the name of the chapter you want to enter the subsection for: ";
+        char ch[20];
+        cin >> ch;
+        node *temp = head->down;
+        while (temp != NULL) {
+            if (!strcmp(ch, temp->name)) {
+                cout << "\nEnter the name of the section you want to enter the subsection for: ";
+                char sec[20];
+                cin >> sec;
+                node *t1 = temp->down;
+                while (t1 != NULL) {
+                    if (!strcmp(sec, t1->name)) {
+                        cout << "\nHow many subsections do you want to enter: ";
+                        int n;
+                        cin >> n;
+                        node *t2 = t1->down;
+                        for (int i = 0; i < n; i++) {
+                            node *t3 = create();
+                            if (t1->down == NULL) {
+                                t1->down = t3;
+                            } else {
+                                while (t2->next != NULL)
+                                    t2 = t2->next;
+                                t2->next = t3;
+                            }
+                        }
+                        return;
+                    }
+                    t1 = t1->next;
+                }
+                cout << "\nSection not found.";
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << "\nChapter not found.";
+    }
+}
+
+void Gll::displayb() {
+    if (head == NULL) {
+        cout << "\nBook not found.";
+    } else {
+        node *temp = head;
+        cout << "\nNAME OF BOOK: " << temp->name;
+        while (temp != NULL) {
+            cout << "\n\tNAME OF CHAPTER: " << temp->name;
+            if (temp->down != NULL) {
+                node *t1 = temp->down;
+                while (t1 != NULL) {
+                    cout << "\n\t\tNAME OF SECTION: " << t1->name;
+                    if (t1->down != NULL) {
+                        node *t2 = t1->down;
+                        while (t2 != NULL) {
+                            cout << "\n\t\t\tNAME OF SUBSECTION: " << t2->name;
+                            t2 = t2->next;
+                        }
+                    }
+                    t1 = t1->next;
+                }
+            }
+            temp = temp->next;
+        }
+    }
+}
+
+int main() {
+    Gll g;
+    int x;
+    while (true) {
+        cout << "\n\nEnter your choice:\n";
+        cout << "1. Insert book\n";
+        cout << "2. Insert chapter\n";
+        cout << "3. Insert section\n";
+        cout << "4. Insert subsection\n";
+        cout << "5. Display book\n";
+        cout << "6. Exit\n";
+        cin >> x;
+        switch (x) {
+            case 1:
+                g.insertb();
+                break;
+            case 2:
+                g.insertc();
+                break;
+            case 3:
+                g.inserts();
+                break;
+            case 4:
+                g.insertss();
+                break;
+            case 5:
+                g.displayb();
+                break;
+            case 6:
+                exit(0);
+            default:
+                cout << "\nInvalid choice. Please enter again.";
+        }
+    }
+    return 0;
+}
